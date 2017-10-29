@@ -1,0 +1,99 @@
+/*
+ Theme Name:   Travelify Child
+ Theme URI:    http://www.asteriski.fi
+ Description:  Travelify Child theme
+ Author:       Asteriski ry
+ Author URI:   http://www.asteriski.fi
+ Template:     travelify
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         asteriski, ebin, nakki, ayylmao, nelkytkaks
+ Text Domain:  travelify-child
+*/
+
+/* copyright roskat piiloon */
+.copyright {display:none; visibility:hidden;} 
+
+/* Yläpalkin tausta yms. */
+#branding {
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#35b233+0,338c26+96 */
+background: #35b233; /* Old browsers */
+background: -moz-linear-gradient(top, #35b233 0%, #338c26 96%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #35b233 0%,#338c26 96%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #35b233 0%,#338c26 96%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#35b233', endColorstr='#338c26',GradientType=0 ); /* IE6-9 */
+margin-top: 0px;
+}
+
+
+/* Sivun otsikon väri */
+h2#site-description { color: #fcc917; }
+
+/* Sivupalkin li */
+#sidebar li {   list-style: none; }
+
+/* Paddinging lisäys kategoria widgettiin. */
+.post-title.cat-post-title { padding: 15px; }
+
+/* Fullwidth sivuksi koska fixed width on vaan niin 90-lukua t:jese */
+.wrapper {
+max-width: 100%;
+}
+
+/* Logosta marginit pois */
+#site-logo {
+	margin-top: 10px;
+}
+.hgroup-wrap {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+
+
+@media only screen and (max-width: 1078px) {
+	.wrapper {
+		width: 100%;
+	}
+	#site-title a img {
+		max-width: 668px;
+	}
+	.no-sidebar-template #content {
+		margin: 0;
+		width: 100%;
+	}
+	#site-logo {
+		margin-left: 20px;
+	}
+	.page-title {
+		padding-left: 30px;
+	}
+	/* Column */
+	.column {
+		margin-left: -2.99%;
+	}
+	.one-half,.one-third,.one-fourth {
+		margin: 0 0 0 2.90%;
+	}
+	.one-third,.one-fourth {
+		width: 30.43%;
+	}
+	.widget_service .one-third,.widget_service .one-fourth {
+		width: 47.02%;
+	}
+	#footerarea .widget_info,#footerarea .widget_text {
+		margin-bottom: 30px;
+	}
+}
+/* Toppi borderi ns. vittuun */
+body {
+border-top: 0px solid #FFF;
+}
+
+/* Kaikki justifyksi koska se on vaan nätimpi */
+#content {
+text-align: justify !important;
+}
+
+.getlapset { float: right; }
