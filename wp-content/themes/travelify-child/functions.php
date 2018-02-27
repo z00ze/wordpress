@@ -8,9 +8,6 @@ function my_theme_enqueue_styles() {
 
 /* Jos pitää lisätä jotain headeriin niin -> */
 function add_toheader() {
-    ?>
-        <!-- laita se tähän -->
-    <?php
 }
 add_action('wp_head', 'add_toheader');
 
@@ -41,6 +38,17 @@ function has_children() {
     } else {
         return true;
     }
+}
+
+// Change default WordPress email address
+add_filter('wp_mail_from', 'new_mail_from');
+add_filter('wp_mail_from_name', 'new_mail_from_name');
+
+function new_mail_from($old) {
+return 'riski-info@utu.fi';
+}
+function new_mail_from_name($old) {
+return 'Riski-info';
 }
 
 ?>
