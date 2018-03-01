@@ -157,18 +157,23 @@ function send_now()
 }
 function save_send_now($post_id)
 {
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
+    // Autosave, do nothing
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+            return;
+    // AJAX? Not used here
+    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) 
+            return;
+    // Check user permissions
+    if ( ! current_user_can( 'edit_post', $post_id ) )
+            return;
+    // Return if it's a post revision
+    if ( false !== wp_is_post_revision( $post_id ) )
+            return;
     
     if (
         !isset($_POST['asteriski_plugin_nonce']) ||
         !wp_verify_nonce($_POST['asteriski_plugin_nonce'], 'asteriski_plugin_nonce_'.$post_id)
     ) {
-        return;
-    }
-    
-    if (!current_user_can('edit_post', $post_id)) {
         return;
     }
                         
@@ -188,12 +193,21 @@ function save_send_now($post_id)
             send_email($post_id);
         }
     }
+    remove_action('save_post', 'save_send_now');
 }
 /** SEND EMAIL */
 function send_email($post_id){
     $post = get_post($post_id);
     $to = get_option('send_to');
-    $subject = get_option('mail_prefix')." ".get_the_category($post_id)." ".$post->post_title;
+    $cats = get_the_category($post_id);
+    $emailcats = '';
+    foreach($cats as $cat){
+        if($cat->name != 'Uutinen'){
+            $emailcats .= $cat->name.' ';
+        }
+    }
+    
+    $subject = get_option('mail_prefix')." ".strtoupper($emailcats)."".$post->post_title;
     $body = get_option('mail_header')."<br>".nl2br($post->post_content)."<br>".get_option('mail_footer')."<br><br>Uutisen voit lukea myös nettisivuilta: <a href='".get_permalink($post_id)."'>".get_permalink($post_id)."</a>";
     $headers = array('Content-Type: text/html; charset=UTF-8');
 
