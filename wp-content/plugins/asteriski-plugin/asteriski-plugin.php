@@ -15,23 +15,22 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 function asteriski_plugin_activation(){
     global $wpdb;
     $wpdb->query("CREATE TABLE IF NOT EXISTS asteriski_emails (id int)");
-    if (! wp_next_scheduled ( 'asteriski_send_emails_event' )) {
-	wp_schedule_event(time(), 'hourly', 'asteriski_send_emails_event');
-    }
 }
 register_activation_hook(__FILE__, 'asteriski_plugin_activation');
 
 function asteriski_plugin_deactivation(){
     global $wpdb;
     $wpdb->query("DROP TABLE IF EXISTS asteriski_emails");
-    wp_clear_scheduled_hook('asteriski_send_emails_event');
 }
 register_deactivation_hook(__FILE__, 'asteriski_plugin_deactivation');
+
+
 
 /** ADMIN */
 add_action('admin_menu', function() {
     add_options_page( 'Asteriski-lisäosan asetukset', 'Asteriski-lisäosa', 'manage_options', 'asteriski-plugin', 'asteriski_plugin_page' );
 });
+ 
  
 add_action( 'admin_init', function() {
     register_setting( 'asteriski-plugin-settings', 'send_to', 'asteriski_validate_email');
@@ -40,6 +39,7 @@ add_action( 'admin_init', function() {
     register_setting( 'asteriski-plugin-settings', 'mail_footer' );
     register_setting( 'asteriski-plugin-settings', 'delete_post_poned' );
     register_setting( 'asteriski-plugin-settings', 'send_post_poned' );
+
 
 });
 function asteriski_validate_text($input){
@@ -53,11 +53,13 @@ function asteriski_validate_email($input){
         return $input;
     }
 }
+ 
 function asteriski_plugin_page() {
   ?>
     <div style="text-align: left;">
         <h1>Asteriski-plugin</h1>
       <form action="options.php" method="post">
+ 
         <?php
           settings_fields( 'asteriski-plugin-settings' );
           do_settings_sections( 'asteriski-plugin-settings' );
@@ -67,6 +69,7 @@ function asteriski_plugin_page() {
                 <th valign="top">Where to send emails</th>
                 <td><input type="email" placeholder="" name="send_to" value="<?php echo esc_attr( get_option('send_to') ); ?>" size="33" /></td>
             </tr>
+
             <tr>
                 <th valign="top">Prefix of email</th>
                 <td><input type="text" placeholder="" name="mail_prefix" value="<?php echo esc_attr( get_option('mail_prefix') ); ?>" size="33" /></td>
@@ -74,11 +77,13 @@ function asteriski_plugin_page() {
             <tr>
                 <th valign="top">Header</th>
                 <td><textarea placeholder="" name="mail_header" rows="5" cols="50"><?php echo esc_attr( get_option('mail_header') ); ?></textarea></td>
-            </tr>    
+            </tr>
+            
             <tr>
                 <th valign="top">Footer</th>
                 <td><textarea placeholder="" name="mail_footer" rows="5" cols="50"><?php echo esc_attr( get_option('mail_footer') ); ?></textarea></td>
             </tr>
+ 
             <tr>
             <th valign="top">Currently waiting to be sent</th>
                 <td><?php 
@@ -115,11 +120,14 @@ function asteriski_plugin_page() {
                     ?>
                 </td>
             </tr>
+
             <tr>
                 <td><?php submit_button(); ?></td>
             </tr>
-        </table>
 
+ 
+        </table>
+ 
       </form>
     </div>
   <?php
@@ -140,7 +148,7 @@ function send_now()
     wp_nonce_field('asteriski_plugin_nonce_'.$post_id, 'asteriski_plugin_nonce');
     if ( current_user_can('author') ){ ?>
     <div class="misc-pub-section misc-pub-section-last">
-        <label><input type="checkbox" value="1" name="_send_now" />Send now!</label>
+        <label><input type="checkbox" value="1" name="_send_now" />Send now to <?php echo get_option('send_to'); ?></label>
     </div>
     <div class="misc-pub-section misc-pub-section-last">
         <label><input type="checkbox" value="1" <?php if($value==1) { echo "checked"; } ?> name="_send_later" />Send later!</label>
