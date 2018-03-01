@@ -146,7 +146,7 @@ function send_now()
     }
     $value = get_post_meta($post_id, '_send_later', true);
     wp_nonce_field('asteriski_plugin_nonce_'.$post_id, 'asteriski_plugin_nonce');
-    if ( current_user_can('author') ){ ?>
+    if ( current_user_can('author') || current_user_can('administrator') || current_user_can('editor') ){ ?>
     <div class="misc-pub-section misc-pub-section-last">
         <label><input type="checkbox" value="1" name="_send_now" />Send now to <?php echo get_option('send_to'); ?></label>
     </div>
