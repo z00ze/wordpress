@@ -28,7 +28,7 @@ register_deactivation_hook(__FILE__, 'asteriski_plugin_deactivation');
 
 /** ADMIN */
 add_action('admin_menu', function() {
-    add_options_page( 'Asteriski-lisäosan asetukset', 'Asteriski-lisäosa', 'manage_options', 'asteriski-plugin', 'asteriski_plugin_page' );
+    add_menu_page( 'Asteriski-lisäosan asetukset', 'Asteriski-lisäosa', 'manage_options', 'asteriski-plugin', 'asteriski_plugin_page' );
 });
  
  
@@ -85,29 +85,23 @@ function asteriski_plugin_page() {
             </tr>
  
             <tr>
-            <th valign="top">Currently waiting to be sent</th>
+            <th valign="top"></th>
                 <td><?php 
                     if(get_option('delete_post_poned')==1){
                         delete_asteriski_emails();
                         update_option('delete_post_poned',0);
-                    }
-                    else{
-                        global $wpdb;
-                        $posts = $wpdb->get_results("SELECT DISTINCT id FROM asteriski_emails");
-                        for($i = 0;$i<count($posts);$i++){
-                            echo get_the_title($posts[$i]->id)."<br>";
-                        }
                     }
                     echo '<label><input type="checkbox" value="1" name="delete_post_poned" />REMOVE all from postponed email list.</label>';
                     ?>
                 </td>
             </tr>
             <tr>
-            <th valign="top">Send postponed emails</th>
+            <th valign="top"></th>
                 <td><?php 
                     if(get_option('send_post_poned')==1){
                         send_later_emails();
-                        update_option('delete_post_poned',0);
+                        update_option('send_post_poned',0);
+                        delete_asteriski_emails();                        
                     }
                     else{
                         global $wpdb;
@@ -224,7 +218,7 @@ function send_later_emails(){
             }
         }
         else{
-            $subject = get_option('mail_prefix')." <Jotain> ";
+            $subject = get_option('mail_prefix')." KOONTI: ";
             $body = get_option('mail_header')."<br>";
             $subject_temp = "";
             $body_subject_temp = "";
@@ -233,7 +227,7 @@ function send_later_emails(){
                 $post = get_post($posts[$i]->id);
                 $subject_temp .= $post->post_title." ";
                 $body_subject_temp .= $post->post_title."<br>";
-                $body_temp .= $post->post_title."<br><br>".nl2br($post->post_content)."<br><br>-----------------------------<br>";
+                $body_temp .= $post->post_title."<br><br>".nl2br($post->post_content)."<br><br>Uutisen voit lukea myös nettisivuilta: <a href='".get_permalink($posts[$i]->id)."'>".get_permalink($posts[$i]->id)."</a><br>-----------------------------<br>";
             }
             $subject .= $subject_temp;
             $body .= $body_subject_temp."<br>-----------------------------<br>".$body_temp."".get_option('mail_footer');
