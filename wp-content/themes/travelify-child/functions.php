@@ -71,13 +71,13 @@ function insert_fb_in_head() {
         echo '<meta property="og:description" content="Asteriski ry - Turun tietojenkäsittelytieteiden opiskelijoiden ainejärjestö."/>';
         echo '<meta property="fb:app_id" content="900688140104027"/>';
     if(!has_post_thumbnail( $post->ID )) { 
-        $default_image="http://asteriski.utu.fi/wp-content/uploads/2017/09/asteriski_logo_netisivu.png";
+        $default_image="https://www.asteriski.fi/wp-content/uploads/2018/04/Asteriski_ry_logo_2017_kelt_vihr-e1522686706540.png";
         echo '<meta property="og:image" content="' . $default_image . '"/>';
     }
     else{
 		$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
 		if(intval($thumbnail_src[1]) < 200 || intval($thumbnail_src[2]) < 200){
-			$default_image="http://asteriski.utu.fi/wp-content/uploads/2017/09/asteriski_logo_netisivu.png";
+			$default_image="https://www.asteriski.fi/wp-content/uploads/2018/04/Asteriski_ry_logo_2017_kelt_vihr-e1522686706540.png";
 			echo '<meta property="og:image" content="' . $default_image . '"/>';
 		}
 		else{
