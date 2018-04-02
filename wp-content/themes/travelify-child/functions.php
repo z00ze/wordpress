@@ -75,8 +75,14 @@ function insert_fb_in_head() {
         echo '<meta property="og:image" content="' . $default_image . '"/>';
     }
     else{
-        $thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
-        echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '"/>';
+		$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'large' );
+		if(intval($thumbnail_src[1]) < 200 || intval($thumbnail_src[2]) < 200){
+			$default_image="http://asteriski.utu.fi/wp-content/uploads/2017/09/asteriski_logo_netisivu.png";
+			echo '<meta property="og:image" content="' . $default_image . '"/>';
+		}
+		else{
+			echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '"/>';
+		}
     }
     echo "";
 }
