@@ -92,3 +92,7 @@ border-top: 0px solid #FFF;
 }
 
 .getlapset { float: right; }
+
+.widget ul li {
+background-image: none !important;
+}
